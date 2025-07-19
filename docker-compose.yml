@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8081:8081"
+    environment:
+      - ANDROID_HOME=/opt/android-sdk
+    tty: true
+    stdin_open: true
