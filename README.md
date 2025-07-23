@@ -14,13 +14,13 @@ This repository includes a Docker Compose configuration for running a React Nati
    ```
 2. Start a development container (Metro bundler will expose port `8081`):
    ```
-   docker compose run --service-ports app
+   docker compose run --service-ports PhoneBlockingApp
    ```
-   The project directory is mounted at `/app` inside the container.
+   The project directory is mounted at `/PhoneBlockingApp` inside the container.
 3. Inside the container you can create or run your React Native project, for example:
    ```
-   npx react-native init MyApp
-   cd MyApp
+   npx react-native init PhoneBlockingApp
+   cd PhoneBlockingApp
    npx react-native start
    ```
 

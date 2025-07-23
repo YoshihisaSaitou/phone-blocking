@@ -1,13 +1,22 @@
-version: "3.8"
-
 services:
   app:
     build: .
-    volumes:
-      - .:/app
     ports:
-      - "8081:8081"
+      - "8081:8081"     # Metro
+      - "5554:5554"     # AVD console
+      - "5555:5555"     # ADB over TCP/IP
+    volumes:
+      - ./PhoneBlockingApp:/PhoneBlockingApp
     environment:
       - ANDROID_HOME=/opt/android-sdk
-    tty: true
-    stdin_open: true
+      - DISPLAY=$DISPLAY         # WSLg / X11 転送用 (任意)
+    devices:
+      - /dev/kvm:/dev/kvm        # KVM を渡す
+    privileged: true             # 必須：/dev/kvm と /dev/dri を扱う
+    command: >
+      bash -c "
+        emulator -avd ci-avd -no-window -no-audio -gpu swiftshader_indirect
+                 -verbose -no-boot-anim -accel on -port 5554 &
+        adb wait-for-device shell 'while [[ $(getprop sys.boot_completed) -ne 1 ]]; do sleep 1; done' &&
+        npm run android
+      "
